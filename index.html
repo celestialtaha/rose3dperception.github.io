@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sparse 3D Perception for Rose Harvesting Robots — Project Page</title>
+  <meta name="description" content="A Two-Stage Approach Bridging Simulation and Real-World Applications">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/main.js"></script>
+  <meta property="og:title" content="Sparse 3D Perception for Rose Harvesting Robots">
+  <meta property="og:description" content="A Two-Stage Approach Bridging Simulation and Real-World Applications">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/img/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Sparse 3D Perception for Rose Harvesting Robots",
+  "headline": "Sparse 3D Perception for Rose Harvesting Robots: A Two-Stage Approach Bridging Simulation and Real-World Applications",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Taha Samavati"
+    },
+    {
+      "@type": "Person",
+      "name": "Mohsen Soryani"
+    },
+    {
+      "@type": "Person",
+      "name": "Sina Mansouri"
+    }
+  ],
+  "datePublished": "2025-07-28",
+  "sameAs": [
+    "https://arxiv.org/abs/2508.00900",
+    "https://doi.org/10.48550/arXiv.2508.00900"
+  ],
+  "identifier": [
+    {
+      "@type": "PropertyValue",
+      "name": "arXiv",
+      "value": "2508.00900"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container inner">
+      <div class="brand">Sparse 3D Perception for Rose Harvesting Robots Project Page</div>
+      <div class="links">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#results">Results</a>
+        <a href="#resources">Resources</a>
+        <a href="#bibtex">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="hero">
+      <span class="kicker">arXiv:2508.00900 · July 28, 2025</span>
+      <h1>Sparse 3D Perception for Rose Harvesting Robots</h1>
+      <div class="subtitle">A Two-Stage Approach Bridging Simulation and Real-World Applications</div>
+      <div class="authors">Taha Samavati, Mohsen Soryani, Sina Mansouri</div>
+      <div class="badges">
+        <a href="https://arxiv.org/pdf/2508.00900.pdf" target="_blank" rel="noopener">📄 PDF</a>
+        <a href="https://arxiv.org/abs/2508.00900" target="_blank" rel="noopener">🧾 arXiv</a>
+        <a href="#bibtex">🔖 BibTeX</a>
+        <a href="https://doi.org/10.48550/arXiv.2508.00900" target="_blank" rel="noopener">🔗 DOI</a>
+      </div>
+      <div class="teaser">
+        <img src="assets/img/teaser.png" alt="Teaser figure" style="width:100%;display:block;">
+      </div>
+      <small class="muted">Replace the teaser with a pipeline or qualitative figure.</small>
+    </section>
+
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p>
+        We present a 3D perception pipeline for flower-harvesting robots that localizes rose centers with sparse 3D points from stereo images.
+        The system operates in two stages: (1) a lightweight 2D point detector on stereo pairs and (2) depth estimation for those points via a compact neural network.
+        To mitigate scarce real-world labels, we train with a photorealistic synthetic greenhouse dataset created in Blender with accurate 3D annotations.
+        We also compare a classical triangulation baseline to the learned depth estimator and report strong performance with efficient compute.
+      </p>
+    </section>
+
+    <section id="method">
+      <h2>Method: Two-Stage Sparse 3D</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Stage 1 — 2D Point Detection</h3>
+          <p>Detect candidate rose centers in both left/right stereo images using a compact point-based detector.</p>
+          <ul>
+            <li>Designed for real-time operation on resource-constrained robots.</li>
+            <li>Outputs per-point confidences and image coordinates.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Stage 2 — Depth Estimation</h3>
+          <p>Estimate the depth for each detected point using a lightweight DNN head, yielding sparse 3D positions.</p>
+          <ul>
+            <li>Compared with a triangulation-based baseline using stereo geometry.</li>
+            <li>Integrated uncertainty helps reject outliers.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="dataset">
+      <h2>Dataset</h2>
+    
+      <p>
+        Synthetic data is cost-effective and fast to produce. It lets us build diverse, controllable scenes that are hard to replicate in the real world. Models trained on synthetic data reach competitive performance and can be boosted further with a small amount of real fine-tuning.
+      </p>
+    
+      <h3>Synthetic Rose Farm (Blender)</h3>
+      <p>
+        We simulate a realistic rose farm in Blender with densely planted bushes and varied layouts. Each sample includes synchronized stereo pairs and precise labels. To sharpen localization for nearby blooms, ground-truth heatmaps are formed by convolving 2D flower centers with adaptive Gaussians whose sigma scales inversely with depth.
+      </p>
+      <ul>
+        <li>Stereo RGB images (left/right)</li>
+        <li>2D image coordinates of flower centers</li>
+        <li>3D world coordinates of flower centers</li>
+        <li>Depth maps</li>
+      </ul>
+    
+      <!-- You will provide the images; keep or change the filenames as you prefer -->
+      <figure class="teaser">
+        <img src="assets/img/samples_of_synthetic_data.jpg" alt="Two samples of synthetic images">
+        <figcaption>Two samples from the synthetic rose-farm simulation.</figcaption>
+      </figure>
+    
+      <h3>Camera Setup</h3>
+      <table class="table">
+        <thead>
+          <tr><th>Parameter</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Focal length</td><td>26&nbsp;mm</td></tr>
+          <tr><td>Pixel size</td><td>0.325&nbsp;mm</td></tr>
+          <tr><td>Stereo system type</td><td>Parallel in the x-direction</td></tr>
+          <tr><td>Baseline</td><td>65&nbsp;mm</td></tr>
+        </tbody>
+      </table>
+    
+      <h3>Scale & Protocol</h3>
+      <p>
+        The synthetic set contains <strong>1,000</strong> samples. Cameras are placed at varying positions, distances, and angles to capture broad viewpoint coverage. Each record includes stereo frames with paired 2D/3D flower-center annotations.
+      </p>
+    
+      <h3>Real Dataset</h3>
+      <p>
+        To evaluate transfer to real scenes, we collected a rose/flower dataset with a stereo rig built from two identical cameras on Raspberry&nbsp;Pi devices. A mobile controller triggers synchronized captures. Depth ground truth for flower centers was not recorded; 2D labeling was performed on the stereo pairs.
+      </p>
+    
+    </section>
+
+    <section id="results">
+      <h2>Results</h2>
+    
+      <h3>Synthetic test (2D localization + depth)</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Category</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F-score</th>
+            <th>Depth L1 error (m)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Deep Monocular</td><td>Near Flower</td><td>94.4</td><td>100</td><td>96.6</td><td>0.16</td></tr>
+          <tr><td>Deep Monocular</td><td>Distant Flower</td><td>94.3</td><td>100</td><td>96.3</td><td>0.23</td></tr>
+          <tr><td>Deep Stereo</td><td>Near Flower</td><td>94.4</td><td>97.6</td><td>95.5</td><td>0.096</td></tr>
+          <tr><td>Deep Stereo</td><td>Distant Flower</td><td>99.6</td><td>100</td><td>99.8</td><td>0.13</td></tr>
+          <tr><td>Template Matching (NCC)</td><td>Near Flower</td><td>94.4</td><td>97.6</td><td>95.5</td><td>0.06</td></tr>
+          <tr><td>Template Matching (NCC)</td><td>Distant Flower</td><td>99.6</td><td>100</td><td>99.8</td><td>0.20</td></tr>
+        </tbody>
+      </table>
+      <p class="muted"><small>Evaluated on the synthetic test subset; “Near / Distant” per distance bands defined in the paper.</small></p>
+    
+      <h3>Comparison with related work (selected)</h3>
+      <p>
+        We contrast our stereo variants with three representative studies spanning rose and fruit datasets. Our method attains a 100% hit rate on synthetic roses with competitive depth error at short range.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Study</th>
+            <th>Product</th>
+            <th>Images</th>
+            <th>Localization</th>
+            <th>Depth Estimation</th>
+            <th>Detection hit rate</th>
+            <th>Depth error</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kohan&nbsp;2011</td>
+            <td>Damask Rose</td>
+            <td>30</td>
+            <td>Thresholding</td>
+            <td>Correspondence + Triangulation</td>
+            <td>98%</td>
+            <td>2% up to 100&nbsp;cm</td>
+          </tr>
+          <tr>
+            <td>Wang&nbsp;2022 (A3N)</td>
+            <td>Apple</td>
+            <td>768</td>
+            <td>A3N Network</td>
+            <td>A3N</td>
+            <td>87.3%</td>
+            <td>0.61&nbsp;cm</td>
+          </tr>
+          <tr>
+            <td>Chen&nbsp;2024</td>
+            <td>Strawberry</td>
+            <td>4,860</td>
+            <td>YOLOv8</td>
+            <td>Enhanced YOLOv8-Pose</td>
+            <td>97.85% (mAP)</td>
+            <td>1.16%</td>
+          </tr>
+          <tr>
+            <td><strong>Ours (Stereo)</strong></td>
+            <td>Damask Rose</td>
+            <td>1,000</td>
+            <td>Deep learning</td>
+            <td>Template matching + Triangulation</td>
+            <td><strong>100%</strong></td>
+            <td><strong>3% up to 200&nbsp;cm</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Ours (Stereo)</strong></td>
+            <td>Damask Rose</td>
+            <td>1,000</td>
+            <td>Deep learning</td>
+            <td>Deep learning</td>
+            <td><strong>100%</strong></td>
+            <td><strong>5% up to 200&nbsp;cm</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Ours (Monocular)</strong></td>
+            <td>Damask Rose</td>
+            <td>1,000</td>
+            <td>Deep learning</td>
+            <td>Deep learning</td>
+            <td><strong>100%</strong></td>
+            <td><strong>8% up to 200&nbsp;cm</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <h3>YOLOv5s head-to-head</h3>
+      <p>
+        For fairness, we fine-tuned YOLOv5s (~7&nbsp;M params) on the synthetic set. Because only rose centers were labeled, bounding boxes were synthesized by
+        <code>bbox_size_pixels = 60 / depth_meters</code>, and predictions with IoU&nbsp;&gt;&nbsp;0.5 were counted as correct. YOLOv5s reaches 83% accuracy on synthetic (17% below ours) but is 4% higher on real data.
+      </p>
+      <table class="table">
+        <thead>
+          <tr><th>Method</th><th>Precision</th><th>Recall</th><th>F-score</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monocular Point-based</td><td>81.9</td><td>74.6</td><td>78.0</td></tr>
+          <tr><td>Stereo Point-based</td><td>76.2</td><td>72.7</td><td>74.0</td></tr>
+          <tr><td>Stereo YOLOv5s</td><td>82.0</td><td>78.8</td><td>80.4</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3D flower-center points (synthetic)</h3>
+      <p>
+        We project predictions from monocular and stereo models into 3D for three random samples. 
+        The stereo model is consistently tighter in depth; the monocular model drifts on distant points.
+      </p>
+    
+      <figure class="teaser" id="fig-3d-points">
+        <!-- Put your image file in assets/img/ -->
+        <img src="assets/img/Picture18.png" 
+             alt="3D coordinates of flower centers for three synthetic samples. Circles: ground truth; triangles: predictions. Top: monocular; bottom: stereo.">
+        <figcaption>
+          3D coordinates of flower center points for three synthetic samples. Circles indicate ground truth, triangles indicate predictions. 
+          Top: monocular model. Bottom: stereo model.
+        </figcaption>
+      </figure>
+    
+    
+      <small class="muted">
+        All synthetic results are on the paper’s test subset. Depth units and bands follow the definitions in the paper.
+      </small>
+    </section>
+    
+
+    <section id="resources">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="https://arxiv.org/pdf/2508.00900.pdf" target="_blank" rel="noopener">Paper (PDF)</a></li>
+        <li><a href="https://arxiv.org/abs/2508.00900" target="_blank" rel="noopener">arXiv abstract</a></li>
+        <li><a href="https://doi.org/10.48550/arXiv.2508.00900" target="_blank" rel="noopener">DOI</a></li>
+      </ul>
+    </section>
+
+    <section id="bibtex">
+      <h2>Citation</h2>
+      <pre><code>@article{samavati2025sparse3d,
+  title={Sparse 3D Perception for Rose Harvesting Robots: A Two-Stage Approach Bridging Simulation and Real-World Applications},
+  author={Samavati, Taha and Soryani, Mohsen and Mansouri, Sina},
+  journal={arXiv preprint arXiv:2508.00900},
+  year={2025},
+  doi={{ https://doi.org/10.48550/arXiv.2508.00900 }}
+}</code></pre>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>
+          © 2025 Authors. Template inspired by widely used CVPR project pages (e.g., <a href="https://nerfies.github.io/" target="_blank" rel="noopener">Nerfies</a>).
+          Please keep this attribution.
+        </p>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
